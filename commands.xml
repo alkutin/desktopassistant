@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Contexts>
+    <Context Name="Main">
+      <Commands>
+        <Command Title="Switch App" Mask="^switch\sapp$" Type="Method" Value="Prebuilt.Desktop.Windows.SwitchApp" />
+        <Command Title="Page up" Mask="^page\sup$" Type="Method" Value="Prebuilt.Desktop.Windows.PageUp" />
+        <Command Title="Page down" Mask="^page\sdown$" Type="Method" Value="Prebuilt.Desktop.Windows.PageDown" />
+        <Command Title="Previous tab" Mask="^previous\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.PrevTab" />
+        <Command Title="Next tab" Mask="^Next\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.NextTab" />
+      </Commands>
+    </Context>
+  </Contexts>
+</Root>
