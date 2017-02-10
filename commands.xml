@@ -7,7 +7,9 @@
         <Command Title="Page up" Mask="^page\sup$" Type="Method" Value="Prebuilt.Desktop.Windows.PageUp" />
         <Command Title="Page down" Mask="^page\sdown$" Type="Method" Value="Prebuilt.Desktop.Windows.PageDown" />
         <Command Title="Previous tab" Mask="^previous\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.PrevTab" />
-        <Command Title="Next tab" Mask="^Next\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.NextTab" />
+        <Command Title="Next tab" Mask="^next\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.NextTab" />
+        <Command Title="Voice on" Mask="^voice\son$" Type="Method" Value="Prebuilt.Context.Management.VoiceOn" />
+        <Command Title="Voice off" Mask="^voice\soff$" Type="Method" Value="Prebuilt.Context.Management.VoiceOff" />
       </Commands>
     </Context>
   </Contexts>

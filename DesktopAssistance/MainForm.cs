@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopAssistance.Model;
+using Prebuilt.Context;
 
 namespace DesktopAssistance
 {
@@ -201,7 +202,7 @@ namespace DesktopAssistance
             {
                 ShowInfo(string.Format("'{0}' with chance {1:F2}. Alternatives: ({2})", s, f, string.Join(", ", a)));
 
-                if (f > 0.9)
+                if (ContextState.Instance.VoiceEnabled && f > 0.9)
                 {
                     if (s == "go")
                         _engine.RunCommand(textBoxCommands.Text);

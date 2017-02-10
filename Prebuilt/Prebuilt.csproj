@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ContextState.cs" />
+    <Compile Include="Context\Management.cs" />
     <Compile Include="Desktop\Windows.cs" />
     <Compile Include="PrebuiltBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -22,7 +22,7 @@ namespace DesktopAssistance
             _commands = commands;
             _onShowMessageEventHandler = onShowMessageEventHandler;
 
-            Debug.WriteLine(string.Join(", ", new Type[] {typeof(Prebuilt.Desktop.Windows)}.Select(s => s.Name)));
+            Debug.WriteLine(string.Join(", ", new Type[] {typeof(Prebuilt.Desktop.Windows), typeof(Prebuilt.Context.Management) }.Select(s => s.Name)));
         }
 
         public void RunCommand(string text)
