@@ -1,15 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Created by SharpDevelop.
+ * User: Alexander
+ * Date: 2/11/2017
+ * Time: 12:09 AM
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
 
 namespace Prebuilt.Context
 {
-    public class ContextState
-    {
-        public static readonly ContextState Instance = new ContextState();
-
-        public bool VoiceEnabled { get; set; }
-    }
+	/// <summary>
+	/// Description of State.
+	/// </summary>
+	public class ContextState
+	{
+		public static readonly ContextState Instance = new ContextState();
+		
+		public ContextState()
+		{
+			VoiceEnabled = true;
+		}
+		
+		public bool VoiceEnabled {get; set;}
+	}
 }
