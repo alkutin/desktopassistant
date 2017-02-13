@@ -13,6 +13,7 @@ namespace DesktopAssistance
         private SpeechRecognitionEngine _recognitionEngine = new SpeechRecognitionEngine(CultureInfo.GetCultureInfo("en-US"));
         private GrammarBuilder _grammarBuilder = new GrammarBuilder();
         private DictationGrammar _dictationGrammar = new DictationGrammar();
+        private System.Speech.Synthesis.SpeechSynthesizer _synthesizer = new System.Speech.Synthesis.SpeechSynthesizer();
 
         public event Action<string, float, string[]> OnSpeech;
 
@@ -27,12 +28,22 @@ namespace DesktopAssistance
             else _recognitionEngine.LoadGrammar(_dictationGrammar);
             _recognitionEngine.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(SpeechRecognized);//событие речь распознана
             _recognitionEngine.RecognizeAsync(RecognizeMode.Multiple);//начинаем распознование
+       
         }
 
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             if (OnSpeech != null)
                 OnSpeech.Invoke(e.Result.Text, e.Result.Confidence, e.Result.Alternates.Where(w => w.Confidence > 0.3).Select(s => s.Text).ToArray());
+        }
+        
+        public void Talk(string message)
+        {
+        	_recognitionEngine.RecognizeAsyncStop();
+        	//_recognitionEngine.SetInputToNull();
+        	_synthesizer.Speak(message);
+        	_recognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
+        
         }
     }
 }

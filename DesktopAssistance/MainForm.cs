@@ -185,7 +185,11 @@ namespace DesktopAssistance
         {
             _commands = new CommandsManager();
 
-            ShowInfo(_commands.Loaded ? $"{_commands.Commands.Contexts.Sum(s => s.Commands.Count)} commands ready in {_commands.Commands.Contexts.Count} context" : "No commands found");
+            ShowInfo(_commands.Loaded ? 
+                     string.Format("{0} commands ready in {1} context",
+					_commands.Commands.Contexts.Sum(s => s.Commands.Count),
+					_commands.Commands.Contexts.Count)     
+                     : "No commands found");
 
             _engine = new RunEngine(_commands, (sender, s) => ShowInfo(s));
 
@@ -193,7 +197,9 @@ namespace DesktopAssistance
             _recognizer.OnSpeech += RecognizerOnOnSpeech;
             var speechCommands = _engine.GetAllCommands();
             speechCommands.Add("go");
+            speechCommands.Add("voice on and go");
             _recognizer.Init(speechCommands.ToArray());
+            
         }
 
         private void RecognizerOnOnSpeech(string s, float f, string[] a)
@@ -202,11 +208,23 @@ namespace DesktopAssistance
             {
                 ShowInfo(string.Format("'{0}' with chance {1:F2}. Alternatives: ({2})", s, f, string.Join(", ", a)));
 
-                if (ContextState.Instance.VoiceEnabled && f > 0.9)
+                if ((ContextState.Instance.VoiceEnabled || s == "voice on and go")
+                    && f > 0.9)
                 {
-                    if (s == "go")
+                	
+                	if (s == "voice on and go")
+                	{
+                		textBoxCommands.Text = s;
+                		_recognizer.Talk(s);
+                		_engine.RunCommand("voice on");
+                	}
+                    else if (s == "go")
                         _engine.RunCommand(textBoxCommands.Text);
-                    else textBoxCommands.Text = s.Trim().ToLower();
+                    else 
+                    {
+                    	_recognizer.Talk(s);
+                    	textBoxCommands.Text = s.Trim().ToLower();                    
+                    }
                 }
             }
         }
