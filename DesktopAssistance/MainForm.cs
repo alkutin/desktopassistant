@@ -185,10 +185,10 @@ namespace DesktopAssistance
         {
             _commands = new CommandsManager();
 
-            ShowInfo(_commands.Loaded ? 
+            ShowInfo(_commands.Loaded ?
                      string.Format("{0} commands ready in {1} context",
 					_commands.Commands.Contexts.Sum(s => s.Commands.Count),
-					_commands.Commands.Contexts.Count)     
+					_commands.Commands.Contexts.Count)
                      : "No commands found");
 
             _engine = new RunEngine(_commands, (sender, s) => ShowInfo(s));
@@ -199,7 +199,7 @@ namespace DesktopAssistance
             speechCommands.Add("go");
             speechCommands.Add("voice on and go");
             _recognizer.Init(speechCommands.ToArray());
-            
+
         }
 
         private void RecognizerOnOnSpeech(string s, float f, string[] a)
@@ -211,7 +211,7 @@ namespace DesktopAssistance
                 if ((ContextState.Instance.VoiceEnabled || s == "voice on and go")
                     && f > 0.9)
                 {
-                	
+
                 	if (s == "voice on and go")
                 	{
                 		textBoxCommands.Text = s;
@@ -220,10 +220,10 @@ namespace DesktopAssistance
                 	}
                     else if (s == "go")
                         _engine.RunCommand(textBoxCommands.Text);
-                    else 
+                    else
                     {
                     	_recognizer.Talk(s);
-                    	textBoxCommands.Text = s.Trim().ToLower();                    
+                    	textBoxCommands.Text = s.Trim().ToLower();
                     }
                 }
             }
