@@ -68,6 +68,7 @@ namespace DesktopAssistance
         private RunEngine _engine;
         private CommandsManager _commands;
         private SimpleSpeechRecognizer _recognizer;
+        private const int MaxWaitTimeSecs = 15;
 
         /// <summary>
 ///     Sends an appbar message to the system.
@@ -156,9 +157,13 @@ namespace DesktopAssistance
 
         const int WM_USER = 0x0400;
 
+        public DateTime LastTimeToGo { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
+
+            LastTimeToGo = DateTime.MinValue;
 
             HandleCreated += OnHandleCreated;
 
@@ -219,11 +224,18 @@ namespace DesktopAssistance
                 		_engine.RunCommand("voice on");
                 	}
                     else if (s == "go")
-                        _engine.RunCommand(textBoxCommands.Text);
+                    {
+                        if ((DateTime.UtcNow - LastTimeToGo).TotalSeconds < MaxWaitTimeSecs)
+                        {
+                            _engine.RunCommand(textBoxCommands.Text);
+                            LastTimeToGo = DateTime.UtcNow;
+                        }
+                    }
                     else
                     {
-                    	_recognizer.Talk(s);
-                    	textBoxCommands.Text = s.Trim().ToLower();
+                        _recognizer.Talk(s);
+                        textBoxCommands.Text = s.Trim().ToLower();
+                        LastTimeToGo = DateTime.UtcNow;
                     }
                 }
             }
