@@ -67,7 +67,7 @@ namespace DesktopAssistance
     {
         private RunEngine _engine;
         private CommandsManager _commands;
-        private SimpleSpeechRecognizer _recognizer;
+        private Recognizer.ISpeechRecognizer _recognizer;
         private const int MaxWaitTimeSecs = 15;
 
         /// <summary>
@@ -179,6 +179,8 @@ namespace DesktopAssistance
             LoadCommands();
 
             textBoxCommands.Focus();
+
+            _recognizer?.Talk("Welcome to Desktop Assistance");
         }
 
         private void OnHandleCreated(object sender, EventArgs eventArgs)
@@ -189,56 +191,79 @@ namespace DesktopAssistance
         private void LoadCommands()
         {
             _commands = new CommandsManager();
-
-            ShowInfo(_commands.Loaded ?
-                     string.Format("{0} commands ready in {1} context",
-					_commands.Commands.Contexts.Sum(s => s.Commands.Count),
-					_commands.Commands.Contexts.Count)
-                     : "No commands found");
+            ShowCommands();
 
             _engine = new RunEngine(_commands, (sender, s) => ShowInfo(s));
 
-            _recognizer = new SimpleSpeechRecognizer();
+            _recognizer = new Recognizer.SimpleSpeechRecognizer();
+            //_recognizer = new Recognizer.AzureSpeechRecognizer();
             _recognizer.OnSpeech += RecognizerOnOnSpeech;
             var speechCommands = _engine.GetAllCommands();
             speechCommands.Add("go");
-            speechCommands.Add("voice on and go");
+            speechCommands.Add("voice on and go");            
+            speechCommands.Add("show commands");
             _recognizer.Init(speechCommands.ToArray());
+            textBoxCommands.Text = "Say: show commands";
 
+        }
+
+        private void ShowCommands()
+        {
+            var message = _commands.Loaded ?
+                                 string.Format("{0} commands ready in {1} context: {2}",
+                                _commands.Commands.Contexts.Sum(s => s.Commands.Count),
+                                _commands.Commands.Contexts.Count,
+                                string.Join("; ", _commands.Commands.Contexts.Select(s => s.Name + "=" + string.Join(", ", s.Commands.Select(c => c.Title)))))
+                                 : "No commands found";
+            ShowInfo(message);
+
+            _recognizer?.Talk(message);
         }
 
         private void RecognizerOnOnSpeech(string s, float f, string[] a)
         {
-            if (f > 0.8)
-            {
-                ShowInfo(string.Format("'{0}' with chance {1:F2}. Alternatives: ({2})", s, f, string.Join(", ", a)));
-
-                if ((ContextState.Instance.VoiceEnabled || s == "voice on and go")
-                    && f > 0.9)
+            //Task.Run(() => {
+                if (f > 0.8)
                 {
+                    ShowInfo(string.Format("'{0}' with chance {1:F2}. Alternatives: ({2})", s, f, string.Join(", ", a)) + (ContextState.Instance.VoiceEnabled ? "" : ". Voice if off"));
 
-                	if (s == "voice on and go")
-                	{
-                		textBoxCommands.Text = s;
-                		_recognizer.Talk(s);
-                		_engine.RunCommand("voice on");
-                	}
-                    else if (s == "go")
+                    if ((ContextState.Instance.VoiceEnabled || s == "voice on and go")
+                        && (f > 0.9))// || (a.Length == 1 && a[0] == s)))
                     {
-                        if ((DateTime.UtcNow - LastTimeToGo).TotalSeconds < MaxWaitTimeSecs)
+
+                        if (s == "show commands" || s == "help")
                         {
-                            _engine.RunCommand(textBoxCommands.Text);
-                            LastTimeToGo = DateTime.UtcNow;
+                            ShowCommands();
+                        }
+                        else if (s == "voice on and go")
+                        {
+                            textBoxCommands.Text = s;
+                            _recognizer.Talk(s);
+                            _engine.RunCommand("voice on");
+                        }
+                        else if (s == "go")
+                        {
+                            if ((DateTime.UtcNow - LastTimeToGo).TotalSeconds < MaxWaitTimeSecs)
+                            {
+                                Invoke(new Action(() =>
+                                {
+                                    _engine.RunCommand(textBoxCommands.Text);
+                                    LastTimeToGo = DateTime.UtcNow;
+                                }));                                
+                            }
+                        }
+                        else
+                        {                            
+                            Invoke(new Action(() =>
+                            {
+                                textBoxCommands.Text = s.Trim().ToLower();
+                                LastTimeToGo = DateTime.UtcNow;
+                                _recognizer.Talk(s);
+                            }));
                         }
                     }
-                    else
-                    {
-                        _recognizer.Talk(s);
-                        textBoxCommands.Text = s.Trim().ToLower();
-                        LastTimeToGo = DateTime.UtcNow;
-                    }
                 }
-            }
+            //});
         }
 
         private void OnHandleDestroyed(object sender, EventArgs eventArgs)
@@ -323,7 +348,7 @@ namespace DesktopAssistance
 
         public void ShowInfo(string message)
         {
-            textBoxInfo.Text = message;
+            Invoke(new Action(() => { textBoxInfo.Text = message; }));            
         }
 
         private void textBoxCommands_KeyPress(object sender, KeyPressEventArgs e)

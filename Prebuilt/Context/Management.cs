@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Diagnostics;
 
 namespace Prebuilt.Context
 {
@@ -30,5 +31,11 @@ namespace Prebuilt.Context
 			OnMessage(this, "Voice is off");
 			ContextState.Instance.VoiceEnabled = false;
 		}
+
+        public void Exit()
+        {
+            OnMessage(this, "Exit");
+            Process.GetCurrentProcess().CloseMainWindow();
+        }
 	}
 }

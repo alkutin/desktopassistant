@@ -3,6 +3,8 @@
   <Contexts>
     <Context Name="Main">
       <Commands>
+        <Command Title="Enter" Mask="^enter$" Type="Method" Value="Prebuilt.Desktop.Windows.Enter" />
+        <Command Title="Windows Tab" Mask="^windows\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.WindowsTab" />
         <Command Title="Switch App" Mask="^switch\sapp$" Type="Method" Value="Prebuilt.Desktop.Windows.SwitchApp" />
         <Command Title="Page up" Mask="^page\sup$" Type="Method" Value="Prebuilt.Desktop.Windows.PageUp" />
         <Command Title="Page down" Mask="^page\sdown$" Type="Method" Value="Prebuilt.Desktop.Windows.PageDown" />
@@ -10,6 +12,12 @@
         <Command Title="Next tab" Mask="^next\stab$" Type="Method" Value="Prebuilt.Desktop.Windows.NextTab" />
         <Command Title="Voice on" Mask="^voice\son$" Type="Method" Value="Prebuilt.Context.Management.VoiceOn" />
         <Command Title="Voice off" Mask="^voice\soff$" Type="Method" Value="Prebuilt.Context.Management.VoiceOff" />
+        <Command Title="Exit" Mask="^exit$" Type="Method" Value="Prebuilt.Context.Management.Exit" />
+        
+        <Command Title="Left" Mask="left" Type="Method" Value="Prebuilt.Desktop.Windows.Left" />
+        <Command Title="Right" Mask="right" Type="Method" Value="Prebuilt.Desktop.Windows.Right" />
+        <Command Title="Up" Mask="up" Type="Method" Value="Prebuilt.Desktop.Windows.Up" />
+        <Command Title="Down" Mask="down" Type="Method" Value="Prebuilt.Desktop.Windows.Down" />
       </Commands>
     </Context>
   </Contexts>

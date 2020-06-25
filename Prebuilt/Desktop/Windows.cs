@@ -98,6 +98,12 @@ namespace Prebuilt.Desktop
         {
         }
 
+        public void WindowsTab()
+        {
+            OnMessage(this, "windows tab");
+            SendKeys.Send("^%{TAB}");
+        }
+
         public void SwitchApp()
         {
             OnMessage(this, "Switch App activated");
@@ -110,6 +116,13 @@ namespace Prebuilt.Desktop
                 SetFocus(nextWindow);
             } */
         }
+
+        public void Enter()
+        {
+            OnMessage(this, "enter");
+            SendKeys.Send("{ENTER}");
+        }
+
 
         public void PageUp()
         {
@@ -133,6 +146,35 @@ namespace Prebuilt.Desktop
         {
             OnMessage(this, "Next tab");
             SendKeys.Send("^({TAB})");
+        }
+
+        public void Left()
+        {
+            OnMessage(this, "Left");
+            SendKeys.Send("{LEFT}");
+        }
+
+        public void Right()
+        {
+            OnMessage(this, "Right");
+            SendKeys.Send("{RIGHT}");
+        }
+
+        public void Up()
+        {
+            OnMessage(this, "Up");
+            SendKeys.Send("{UP}");
+        }
+
+        public void Down()
+        {
+            OnMessage(this, "Down");
+            SendKeys.Send("{DOWN}");
+        }
+
+        public void SelectWord()
+        {
+            
         }
     }
 }
