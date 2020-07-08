@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CognitiveServices.Speech;
 
 namespace DesktopAssistance.Recognizer
 {
+    /*
     public class AzureSpeechRecognizer : ISpeechRecognizer
     {
         private SpeechRecognizer _recognizer;
@@ -39,5 +39,5 @@ namespace DesktopAssistance.Recognizer
 
             await _recognizer.RecognizeOnceAsync().ConfigureAwait(false);
         }
-    }
+    }*/
 }

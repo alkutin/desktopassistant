@@ -10,7 +10,7 @@ namespace DesktopAssistance.Recognizer
 {
     class SimpleSpeechRecognizer : ISpeechRecognizer
     {
-        private SpeechRecognitionEngine _recognitionEngine = new SpeechRecognitionEngine();// CultureInfo.GetCultureInfo("en-US"));
+        private SpeechRecognitionEngine _recognitionEngine = new SpeechRecognitionEngine(CultureInfo.GetCultureInfo("en-US"));
         private GrammarBuilder _grammarBuilder = new GrammarBuilder();
         private DictationGrammar _dictationGrammar = new DictationGrammar();
         private System.Speech.Synthesis.SpeechSynthesizer _synthesizer = new System.Speech.Synthesis.SpeechSynthesizer();
